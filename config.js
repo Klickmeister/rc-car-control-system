@@ -8,7 +8,8 @@ const config = {
   'ssl': {
     key: './cert/server.key',
     cert: './cert/server.cert',
-  }
+  },
+  'servoControlScript': './servo_control.py',
 }
 
 module.exports = config;
