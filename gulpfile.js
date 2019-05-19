@@ -36,6 +36,7 @@ function browserSync(done) {
     proxy : 'http://localhost:3000',
     open: false,
     cors: true,
+    https: true,
     port : 3001
   });
   done();

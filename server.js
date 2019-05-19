@@ -3,6 +3,7 @@
 const config          = require('./config.js'),
       express         = require('express'),
       cluster         = require('cluster'),
+      fs              = require('fs'),
       ejs             = require('ejs'),
       app             = express(),
       http            = require('http'),
@@ -15,7 +16,6 @@ const config          = require('./config.js'),
 
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
-
 
 
 /* === Routes === */
@@ -50,7 +50,16 @@ if(cluster.isMaster) {
     cluster.fork();
   });
 } else {
-  let httpsserver = http.createServer(app).listen(config.server.port);
+  let httpsserver = https.createServer({
+    key: fs.readFileSync(config.ssl.key),
+    cert: fs.readFileSync(config.ssl.cert)
+  }, app).listen(config.server.sslPort, config.server.host);
+  let httpserver = http.createServer(function(req, res) {
+    res.writeHead(302, {
+      'Location': `https://${config.server.host}:${config.server.port}${$req.url}`,
+    });
+    res.end();
+  }).listen(config.server.port, config.server.host);
 }
 
 process.on('uncaughtException', function (err) {
