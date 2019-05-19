@@ -33,6 +33,8 @@ app.post('/rc', (req, res) => {
   const steering = normalize_servo_input(req.body.steering);
   const speed = normalize_servo_input(req.body.speed);
 
+  console.log("Received CTL, ", `Steer: ${steering}`, `Speed: ${speed}`);
+
   const subprocess = spawn('python', [
     config.servoControlScript,
     steering,
