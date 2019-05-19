@@ -331,6 +331,7 @@ ASALocalRun/
 
 # config
 config.js
+cert/
 
 # Build files
 public/css/*.css
