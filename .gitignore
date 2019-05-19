@@ -328,3 +328,14 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# config
+config.js
+cert/
+
+# Build files
+public/css/*.css
+public/js/*.js
+
+# Misc Ignores
+.DS_Store

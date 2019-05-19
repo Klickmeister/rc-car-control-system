@@ -1,13 +1,14 @@
 {
   "name": "rc-car-control-system",
   "version": "1.0.0",
-  "description": "Remote Raspi Car Control",
-  "dependencies": {},
-  "devDependencies": {
-    "howler": "^2.1.2"
-  },
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp",
+    "dev": "gulp watch",
+    "build": "gulp",
+    "css": "gulp css",
+    "js": "gulp js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,31 @@
   "bugs": {
     "url": "https://github.com/Klickmeister/rc-car-control-system/issues"
   },
-  "homepage": "https://github.com/Klickmeister/rc-car-control-system#readme"
+  "homepage": "https://github.com/Klickmeister/rc-car-control-system#readme",
+  "dependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "autoprefixer": "^9.5.1",
+    "body-parser": "^1.18.3",
+    "cluster": "^0.7.7",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-minify": "^3.1.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "http": "0.0.0",
+    "https": "^1.0.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "gulp-nodemon": "^2.4.2"
+  }
 }
