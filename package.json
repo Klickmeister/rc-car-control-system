@@ -1,0 +1,22 @@
+{
+  "name": "rc-car-control-system",
+  "version": "1.0.0",
+  "description": "Remote Raspi Car Control",
+  "dependencies": {},
+  "devDependencies": {
+    "howler": "^2.1.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Klickmeister/rc-car-control-system.git"
+  },
+  "author": "Klickmeister GmbH",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Klickmeister/rc-car-control-system/issues"
+  },
+  "homepage": "https://github.com/Klickmeister/rc-car-control-system#readme"
+}

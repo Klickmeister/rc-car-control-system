@@ -1,6 +1,6 @@
 {
   "liveServer.settings.https": {
-    "enable": true, //set it true to enable the feature.
+    "enable": false, //set it true to enable the feature.
     "cert": "/Users/cnoss/ssl-certificate/server.crt", //full path of the certificate
     "key": "/Users/cnoss/ssl-certificate/server.key", //full path of the private key
     "passphrase": "00rica"
