@@ -47,9 +47,7 @@ app.post('/rc', (req, res) => {
     console.log(`error:${data}`);
   });
 
-  subprocess.stderr.on('close', () => {
-    console.log("Closed");
-  });
+  subprocess.stderr.on('close', () => {});
 
   res.status(200).send();
 });
