@@ -66,7 +66,7 @@ function handleInitClick() {
   initinalTest = test;
   initial.innerHTML = "initialSteering : " + steering + "\n";
   initial.innerHTML += "initialAcceleration: " + acceleration + "\n";
-  initial.innerHTML += "initialTest: " + test + "\n";
+  initial.innerHTML += "initialZ: " + test + "\n";
 
 
 }
