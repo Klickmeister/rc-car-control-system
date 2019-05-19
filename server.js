@@ -1,10 +1,13 @@
 /* === Extensions import === */
 
 const config          = require('./config.js'),
+      path            = require('path'),
+      {spawn}         = require('child_process'),
       express         = require('express'),
       cluster         = require('cluster'),
       fs              = require('fs'),
       ejs             = require('ejs'),
+      bodyParser      = require('body-parser'),
       app             = express(),
       http            = require('http'),
       https           = require('https'),
@@ -15,6 +18,7 @@ const config          = require('./config.js'),
 /* === express configuration === */
 
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
 
@@ -22,6 +26,32 @@ app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
   res.render('index.ejs');
+});
+
+app.post('/rc', (req, res) => {
+
+  const steering = req.body.steering ? parseInt(req.body.steering) : 7;
+  const speed = req.body.speed ? parseInt(req.body.speed) : 7;
+
+  const subprocess = spawn('python', [
+    config.servoControlScript,
+    steering,
+    speed,
+  ]);
+
+  subprocess.stdout.on('data', (data) => {
+    console.log(`data:${data}`);
+  });
+
+  subprocess.stderr.on('data', (data) => {
+    console.log(`error:${data}`);
+  });
+
+  subprocess.stderr.on('close', () => {
+    console.log("Closed");
+  });
+
+  res.status(200).send();
 });
 
 
