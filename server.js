@@ -55,7 +55,7 @@ if(cluster.isMaster) {
   }, app).listen(config.server.sslPort, config.server.host);
   let httpserver = http.createServer(function(req, res) {
     res.writeHead(302, {
-      'Location': `https://${config.server.host}:${config.server.port}${$req.url}`,
+      'Location': `https://${config.server.host}:${config.server.port}${req.url}`,
     });
     res.end();
   }).listen(config.server.port, config.server.host);
