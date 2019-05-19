@@ -6,8 +6,8 @@ const config = {
     workers: 2,
   },
   'ssl': {
-    key: './cert/server.key',
-    cert: './cert/server.cert',
+    key: '/Users/cnoss/ssl-certificate/server.key',
+    cert: '/Users/cnoss/ssl-certificate/server.crt',
   },
   'servoControlScript': './servo_control.py',
 }
