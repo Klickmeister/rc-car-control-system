@@ -80,16 +80,20 @@ if(cluster.isMaster) {
     cluster.fork();
   });
 } else {
-  let httpsserver = https.createServer({
-    key: fs.readFileSync(config.ssl.key),
-    cert: fs.readFileSync(config.ssl.cert)
-  }, app).listen(config.server.sslPort, config.server.host);
-  let httpserver = http.createServer(function(req, res) {
-    res.writeHead(302, {
-      'Location': `https://${config.server.host}:${config.server.port}${req.url}`,
-    });
-    res.end();
-  }).listen(config.server.port, config.server.host);
+  if (process.argv.slice(2)[0] === 'insecure') {
+    let httpserver = http.createServer(app).listen(config.server.port, config.server.host);
+  } else {
+    let httpsserver = https.createServer({
+      key: fs.readFileSync(config.ssl.key),
+      cert: fs.readFileSync(config.ssl.cert)
+    }, app).listen(config.server.sslPort, config.server.host);
+    let httpserver = http.createServer(function(req, res) {
+      res.writeHead(302, {
+        'Location': `https://${config.server.host}:${config.server.port}${req.url}`,
+      });
+      res.end();
+    }).listen(config.server.port, config.server.host);
+  }
 }
 
 process.on('uncaughtException', function (err) {
