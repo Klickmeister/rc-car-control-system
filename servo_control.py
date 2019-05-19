@@ -13,6 +13,8 @@ def control_servo(servo_number, value):
     servos[servo_number].ChangeDutyCycle(value)
     time.sleep(0.1)
 
+    servos[servo_number].stop()
+
     return
 
 # MAIN
@@ -33,21 +35,13 @@ steering = int(sys.argv[2])
 
 try:
 
-    # while 1:
-
     if speed:
         control_servo(0, speed);
 
     if steering:
         control_servo(1, steering);
-        
-        # raw_steering = input()
-        # steering = int(raw_steering)
 
-        # for dc in range(7, 16, 1):
-        #     p.ChangeDutyCycle(dc)
-        #     time.sleep(0.05)
-
+    GPIO.cleanup()
 
 except KeyboardInterrupt:
     pass

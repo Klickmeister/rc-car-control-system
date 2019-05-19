@@ -2,8 +2,8 @@ var ball = document.querySelector('.ball');
 var garden = document.querySelector('.garden');
 var output = document.querySelector('.output');
 var initial = document.querySelector('.initial');
-var maxAcceleration = 30;
-var maxSteering = 30;
+var maxAcceleration = 7;
+var maxSteering = 7;
 var steering;
 var acceleration;
 var initinalSteering = 15;
@@ -66,7 +66,7 @@ function handleInitClick() {
   initinalTest = test;
   initial.innerHTML = "initialSteering : " + steering + "\n";
   initial.innerHTML += "initialAcceleration: " + acceleration + "\n";
-  initial.innerHTML += "initialTest: " + test + "\n";
+  initial.innerHTML += "initialZ: " + test + "\n";
 
 
 }
