@@ -1,14 +1,15 @@
 /* === Extensions import === */
 
 const config          = require('./config.js'),
-      http            = require('http'),
-      https           = require('https'), 
       express         = require('express'),
       cluster         = require('cluster'),
       ejs             = require('ejs'),
       app             = express(),
+      http            = require('http'),
+      https           = require('https'),
       server          = http.createServer(app);
-  
+      io              = require('socket.io').listen(server),
+
 
 /* === express configuration === */
 
@@ -56,4 +57,8 @@ process.on('uncaughtException', function (err) {
   console.error((new Date).toUTCString() + ' uncaughtException:', err.message)
   console.error(err.stack)
   process.exit(1)
+});
+
+io.on('connection', function(socket){
+  console.log('a user connected');
 });
