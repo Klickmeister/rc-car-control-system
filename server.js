@@ -3,16 +3,17 @@
 const config          = require('./config.js'),
       path            = require('path'),
       {spawn}         = require('child_process'),
-      http            = require('http'),
-      https           = require('https'), 
       express         = require('express'),
       cluster         = require('cluster'),
       fs              = require('fs'),
       ejs             = require('ejs'),
       bodyParser      = require('body-parser'),
       app             = express(),
+      http            = require('http'),
+      https           = require('https'),
       server          = http.createServer(app);
-  
+      io              = require('socket.io').listen(server),
+
 
 /* === express configuration === */
 
@@ -85,7 +86,7 @@ if(cluster.isMaster) {
   }, app).listen(config.server.sslPort, config.server.host);
   let httpserver = http.createServer(function(req, res) {
     res.writeHead(302, {
-      'Location': `https://${config.server.host}:${config.server.port}${$req.url}`,
+      'Location': `https://${config.server.host}:${config.server.port}${req.url}`,
     });
     res.end();
   }).listen(config.server.port, config.server.host);
@@ -95,4 +96,8 @@ process.on('uncaughtException', function (err) {
   console.error((new Date).toUTCString() + ' uncaughtException:', err.message)
   console.error(err.stack)
   process.exit(1)
+});
+
+io.on('connection', function(socket){
+  console.log('a user connected');
 });

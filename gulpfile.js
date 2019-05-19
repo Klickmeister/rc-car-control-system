@@ -2,6 +2,7 @@
 'use strict';
 
 // Load plugins
+const config = require('./config.js');
 const nodemon = require('gulp-nodemon');
 const browsersync = require('browser-sync').create();
 const gulp = require('gulp');
@@ -33,10 +34,14 @@ function server() {
 // BrowserSync
 function browserSync(done) {
   browsersync.init({
-    proxy : 'http://localhost:3000',
+    proxy : 'https://localhost:3000',
     open: false,
     cors: true,
-    port : 3001
+    port : 3001,
+    https: {
+      key: config.ssl.key,
+      cert: config.ssl.cert,
+    }
   });
   done();
 }
