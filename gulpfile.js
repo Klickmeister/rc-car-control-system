@@ -69,7 +69,7 @@ function browserSyncReload(done) {
 // Transpile, concatenate and minify CSS
 function css() {
   return gulp
-    .src('./src/scss/**/*.scss')
+    .src('./src/scss/*.scss')
     .pipe(plumber())
     .pipe(sass({
       outputStyle: 'expanded',
