@@ -20,8 +20,15 @@ const minify = require('gulp-minify');
 // Starting the webserver
 function server() {
   let started = false;
+
+  let args = [];
+  if (process.argv.slice(3)[0] === '-insecure') {
+    args.push('insecure');
+  }
+
   return nodemon({
     script: 'server.js',
+    args: args,
     watch: ['server.js', 'models', 'routes']
   }).on('start', function () {
     if (!started) {
@@ -33,7 +40,7 @@ function server() {
 
 // BrowserSync
 function browserSync(done) {
-  browsersync.init({
+  let options = {
     proxy : 'https://localhost:3000',
     open: false,
     cors: true,
@@ -42,7 +49,14 @@ function browserSync(done) {
       key: config.ssl.key,
       cert: config.ssl.cert,
     }
-  });
+  }
+
+  if (process.argv.slice(3)[0] === '-insecure') {
+    options.proxy = 'http://localhost:2999';
+    delete options.https;
+  }
+
+  browsersync.init(options);
   done();
 }
 
