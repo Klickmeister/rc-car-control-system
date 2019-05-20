@@ -1,6 +1,6 @@
 /* === Extensions import === */
 
-const config          = require('./config.js'),
+const config            = require('./config.js'),
       path            = require('path'),
       {spawn}         = require('child_process'),
       express         = require('express'),
@@ -9,10 +9,11 @@ const config          = require('./config.js'),
       ejs             = require('ejs'),
       bodyParser      = require('body-parser'),
       app             = express(),
-      http            = require('http'),
-      https           = require('https'),
-      server          = http.createServer(app);
-      io              = require('socket.io').listen(server),
+      // httpapp             = express(),
+      sslOptions      = { key: fs.readFileSync(config.ssl.key), cert: fs.readFileSync(config.ssl.cert) },
+      httpServer      = require('http').createServer(app),
+      httpsServer     = require('https').createServer(sslOptions, app),
+      io              = require('socket.io').listen(httpServer);
 
 
 /* === express configuration === */
@@ -21,12 +22,24 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
+// httpapp.use(express.static(__dirname + '/public'));
+// httpapp.use(bodyParser.json());
+// httpapp.set('view engine', 'ejs');
 
 /* === Routes === */
 
 app.get('/', (req, res) => {
   res.render('index.ejs');
 });
+// httpapp.get('/', (req, res) => {
+//   res.render('index.ejs');
+// });
+io.listen(httpsServer);
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
+
 
 app.post('/rc', (req, res) => {
 
@@ -55,7 +68,7 @@ app.post('/rc', (req, res) => {
 });
 
 function normalize_servo_input(val) {
-  // range: {-7, 7} 
+  // range: {-7, 7}
   if(val) {
     val = parseInt(val);
 
@@ -80,6 +93,9 @@ function normalize_servo_input(val) {
 app.get('*', (req, res) => {
   res.status(404).send();
 });
+// httpapp.get('*', (req, res) => {
+//   res.status(404).send();
+// });
 
 
 /* === Server startup === */
@@ -100,18 +116,16 @@ if(cluster.isMaster) {
   });
 } else {
   if (process.argv.slice(2)[0] === 'insecure') {
-    let httpserver = http.createServer(app).listen(config.server.port, config.server.host);
+    httpServer.listen(config.server.port, config.server.host);
   } else {
-    let httpsserver = https.createServer({
-      key: fs.readFileSync(config.ssl.key),
-      cert: fs.readFileSync(config.ssl.cert)
-    }, app).listen(config.server.sslPort, config.server.host);
-    let httpserver = http.createServer(function(req, res) {
-      res.writeHead(302, {
-        'Location': `https://${config.server.host}:${config.server.port}${req.url}`,
-      });
-      res.end();
-    }).listen(config.server.port, config.server.host);
+    httpsServer.listen(config.server.sslPort, config.server.host);
+    httpServer.listen(config.server.port, config.server.host);
+    // httpapp.get('*', (req, res) => {
+    //   res.writeHead(302, {
+    //     'Location': `https://${config.server.host}:${config.server.sslPort}${req.url}`,
+    //   });
+    //   res.end();
+    // });
   }
 }
 
@@ -119,8 +133,4 @@ process.on('uncaughtException', function (err) {
   console.error((new Date).toUTCString() + ' uncaughtException:', err.message)
   console.error(err.stack)
   process.exit(1)
-});
-
-io.on('connection', function(socket){
-  console.log('a user connected');
 });

@@ -8,9 +8,9 @@
   <title>Document</title>
   <link rel="stylesheet" href="/css/main.min.css">
   <script src="/js/script.min.js"></script>
+  <script src="https://localhost:3000/socket.io/socket.io.js"></script>
 
 </head>
-
 <body>
   <div class="garden">
     <div class="ball"></div>
@@ -23,8 +23,18 @@
       <pre class="initial"></pre>
       <pre class="status"></pre>
   </div>
-  
 
+
+
+    <script>
+      var socket = io('http://localhost:2999', {
+        'transports': ['websocket'],
+        'secure': true,
+      });
+      socket.on('message', function(data) {
+        alert(data);
+      });
+    </script>
 
 </body>
 
