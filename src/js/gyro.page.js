@@ -43,6 +43,9 @@ const Gyro = {
       output.innerHTML += "acceleration: " + currentAcceleration + "\n";
       output.innerHTML += "z: " + currentTest + "\n";
 
+      RCAudio.drift(currentSteering);
+      RCAudio.acceleration(currentAcceleration);
+
       // Because we don't want to have the device upside down
       // We constrain the x value to the range [-90,90]
       if (currentSteering > 90) { currentSteering = 90 };
@@ -57,15 +60,19 @@ const Gyro = {
       // It center the positioning point to the center of the ball
       ball.style.left = (maxX * currentSteering / 180 - 10) + "px";
       ball.style.top = (maxY * currentAcceleration / 180 - 10) + "px";
+
+      
     }
 
     var initButton = document.querySelector('[data-init]');
     initButton.addEventListener('click', handleInitClick);
 
     function handleInitClick() {
+      RCAudio.init();
       initinalSteering = steering;
       initinalAcceleration = acceleration;
       initinalTest = test;
+      
       initial.innerHTML = "initialSteering : " + steering + "\n";
       initial.innerHTML += "initialAcceleration: " + acceleration + "\n";
       initial.innerHTML += "initialZ: " + test + "\n";

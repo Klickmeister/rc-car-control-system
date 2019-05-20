@@ -28,6 +28,10 @@ app.get('/', (req, res) => {
   res.render('index.ejs');
 });
 
+app.get('/audio', (req, res) => {
+  res.render('audio.ejs');
+});
+
 app.post('/rc', (req, res) => {
 
   const steering = normalize_servo_input(req.body.steering);
