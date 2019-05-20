@@ -30,8 +30,10 @@ app.get('/', (req, res) => {
 
 app.post('/rc', (req, res) => {
 
-  const steering = req.body.steering ? parseInt(req.body.steering) : 7;
-  const speed = req.body.speed ? parseInt(req.body.speed) : 7;
+  const steering = normalize_servo_input(req.body.steering);
+  const speed = normalize_servo_input(req.body.speed);
+
+  console.log("Received CTL, ", `Steer: ${steering}`, `Speed: ${speed}`);
 
   const subprocess = spawn('python', [
     config.servoControlScript,
@@ -47,12 +49,29 @@ app.post('/rc', (req, res) => {
     console.log(`error:${data}`);
   });
 
-  subprocess.stderr.on('close', () => {
-    console.log("Closed");
-  });
+  subprocess.stderr.on('close', () => {});
 
   res.status(200).send();
 });
+
+function normalize_servo_input(val) {
+  // range: {-7, 7} 
+  if(val) {
+    val = parseInt(val);
+
+    if(val > 7) {
+      val = 7;
+    }
+    else if(val < -7) {
+      val = -7;
+    }
+
+    return val + 8;
+  }
+  else {
+    return 8;
+  }
+}
 
 
 /* === 404 Route === */
