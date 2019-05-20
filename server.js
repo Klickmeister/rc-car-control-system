@@ -30,6 +30,10 @@ io.listen(httpsServer);
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+
+  socket.on('message', function(msg) {
+    console.log(msg);
+  })
 });
 
 
