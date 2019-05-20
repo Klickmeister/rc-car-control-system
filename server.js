@@ -9,7 +9,6 @@ const config            = require('./config.js'),
       ejs             = require('ejs'),
       bodyParser      = require('body-parser'),
       app             = express(),
-      // httpapp             = express(),
       sslOptions      = { key: fs.readFileSync(config.ssl.key), cert: fs.readFileSync(config.ssl.cert) },
       httpServer      = require('http').createServer(app),
       httpsServer     = require('https').createServer(sslOptions, app),
@@ -22,18 +21,11 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
-// httpapp.use(express.static(__dirname + '/public'));
-// httpapp.use(bodyParser.json());
-// httpapp.set('view engine', 'ejs');
-
 /* === Routes === */
 
 app.get('/', (req, res) => {
   res.render('index.ejs');
 });
-// httpapp.get('/', (req, res) => {
-//   res.render('index.ejs');
-// });
 io.listen(httpsServer);
 
 io.on('connection', (socket) => {
@@ -93,10 +85,6 @@ function normalize_servo_input(val) {
 app.get('*', (req, res) => {
   res.status(404).send();
 });
-// httpapp.get('*', (req, res) => {
-//   res.status(404).send();
-// });
-
 
 /* === Server startup === */
 
@@ -120,12 +108,6 @@ if(cluster.isMaster) {
   } else {
     httpsServer.listen(config.server.sslPort, config.server.host);
     httpServer.listen(config.server.port, config.server.host);
-    // httpapp.get('*', (req, res) => {
-    //   res.writeHead(302, {
-    //     'Location': `https://${config.server.host}:${config.server.sslPort}${req.url}`,
-    //   });
-    //   res.end();
-    // });
   }
 }
 
